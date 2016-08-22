@@ -18,7 +18,7 @@ class test_add_group(unittest.TestCase):
     def test_test_add_group(self):
         success = True
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        wd.get("http://localhost/addressbook/group.php")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -26,11 +26,12 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
-        wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("new")
+        if not wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none] test']//option[1]").is_selected():
+            wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none] test']//option[1]").click()
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
         wd.find_element_by_name("group_header").send_keys("new")
