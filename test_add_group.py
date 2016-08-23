@@ -26,12 +26,11 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
+        wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys("new")
-        if not wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none] test']//option[1]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none] test']//option[1]").click()
+        wd.find_element_by_name("group_name").send_keys("new1")
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
         wd.find_element_by_name("group_header").send_keys("new")
@@ -39,7 +38,7 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("new")
         wd.find_element_by_name("submit").click()
-        wd.find_element_by_link_text("group page").click()
+        wd.find_element_by_link_text("groups").click()
         wd.find_element_by_link_text("Logout").click()
         self.assertTrue(success)
     
