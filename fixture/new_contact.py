@@ -58,9 +58,12 @@ class ContactHelper:
         return len(wd.find_elements_by_name("selected[]"))
 
     def del_first_contact(self):
+        self.del_contact_by_index(0)
+
+    def del_contact_by_index(self, index):
         wd = self.app.wd
         self.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # submit deletion
         wd.find_element_by_xpath("//div/div[4]/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
@@ -70,13 +73,21 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def modify_first_contact_name(self, new_name_data):
+        self.modify_some_contact_name(0, new_name_data )
+
+    def modify_some_contact_name(self, index, new_name_data):
         wd = self.app.wd
         self.open_home_page()
-        # open first contact to modify
-        wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
+        # open contact to modify
+        edit_button = index + 2
+        wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr["+str(edit_button)+"]/td[8]/a/img").click()
         # enter new data
         self.fill_contact_form(new_name_data)
-        # sumbit mifification form
+        # sumbit modification form
         wd.find_element_by_name("update").click()
         self.contact_list_cache = None
