@@ -11,6 +11,7 @@ class ContactHelper:
         self.fill_contact_form(new_contact)
         # submit the form
         wd.find_element_by_name("submit").click()
+        self.contact_list_cache = None
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -30,17 +31,20 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
 
+    contact_list_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
-        contact_list = []
-        for element in wd.find_elements_by_name("entry"):
-            cells = element.find_elements_by_tag_name("td")
-            firstname = cells[2].text
-            lastname = cells[1].text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contact_list.append(New_contact(name=firstname, last_name=lastname, id=id))
-        return contact_list
+        if self.contact_list_cache is None:
+            wd = self.app.wd
+            wd.find_element_by_link_text("home").click()
+            self.contact_list_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                cells = element.find_elements_by_tag_name("td")
+                firstname = cells[2].text
+                lastname = cells[1].text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.contact_list_cache.append(New_contact(name=firstname, last_name=lastname, id=id))
+        return list(self.contact_list_cache)
 
     def open_home_page(self):
         wd = self.app.wd
@@ -60,6 +64,7 @@ class ContactHelper:
         # submit deletion
         wd.find_element_by_xpath("//div/div[4]/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
+        self.contact_list_cache = None
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -74,3 +79,4 @@ class ContactHelper:
         self.fill_contact_form(new_name_data)
         # sumbit mifification form
         wd.find_element_by_name("update").click()
+        self.contact_list_cache = None
