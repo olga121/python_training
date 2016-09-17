@@ -8,21 +8,23 @@ class ContactHelper:
     def fill_new_contact_form(self, new_contact):
         wd = self.app.wd
         self.open_add_new_contact()
-        # fill new contact form
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(new_contact.name)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(new_contact.last_name)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(new_contact.home_number)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(new_contact.email)
+        self.fill_contact_form(new_contact)
         # submit the form
         wd.find_element_by_name("submit").click()
+
+    def fill_contact_form(self, contact):
+        wd = self.app.wd
+        self.change_field_value("firstname", contact.name)
+        self.change_field_value("lastname", contact.last_name)
+        self.change_field_value("home", contact.home_number)
+        self.change_field_value("email", contact.email)
+
+    def change_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
 
     def open_add_new_contact(self):
         wd = self.app.wd
@@ -40,3 +42,35 @@ class ContactHelper:
             contact_list.append(New_contact(name=firstname, last_name=lastname, id=id))
         return contact_list
 
+    def open_home_page(self):
+        wd = self.app.wd
+        if not(wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+            wd.find_element_by_link_text("groups").click()
+        wd.find_element_by_link_text("home").click()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_home_page()
+        return len(wd.find_elements_by_name("selected[]"))
+
+    def del_first_contact(self):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_first_contact()
+        # submit deletion
+        wd.find_element_by_xpath("//div/div[4]/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
+
+    def modify_first_contact_name(self, new_name_data):
+        wd = self.app.wd
+        self.open_home_page()
+        # open first contact to modify
+        wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
+        # enter new data
+        self.fill_contact_form(new_name_data)
+        # sumbit mifification form
+        wd.find_element_by_name("update").click()
