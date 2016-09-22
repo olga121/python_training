@@ -19,7 +19,7 @@ class New_contact:
         self.all_emails_from_home_page = all_emails_from_home_page
 
     def __repr__(self):
-        return "%s:%s" % (self.id, self.name)
+        return "%s:%s:%s" % (self.id, self.name, self.last_name)
 
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id) and self.name == other.name and self.last_name == other.last_name
