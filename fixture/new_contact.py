@@ -147,3 +147,15 @@ class ContactHelper:
         return New_contact(home_number=home_number, work_number=work_number,
                            mobile_number=mobile_number, secondary_number=secondary_number)
 
+    def del_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(id)
+        # submit deletion
+        wd.find_elements_by_class_name("left")[1].click()
+        wd.switch_to_alert().accept()
+        self.contact_list_cache = None
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[id='%s']" % id).click()

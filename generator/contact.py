@@ -30,7 +30,7 @@ def random_string_letters(prefix, maxlen):
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 def random_string_numbers(prefix, maxlen):
-    symbols = string.digits + string.punctuation + " "*10
+    symbols = string.digits + "-"*3 + " "*3
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 testdata = [New_contact(name="", last_name="", home_number="", mobile_number = "", work_number = "",
